@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1010563649090",
+    "project_id": "ycet-canteen-33268",
+    "storage_bucket": "ycet-canteen-33268.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1010563649090:android:fd56a2e2ad7c64feea67db",
+        "android_client_info": {
+          "package_name": "com.ycet"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCboKpJrETH5dAfep08QY6ZTbPbv9OVWaU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
