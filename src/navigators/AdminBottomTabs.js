@@ -10,6 +10,8 @@ import AdminHome from '../screens/adminhome';
 import AccountScreen from '../screens/AccountScreen';
 import AdminAccountScreen from '../screens/admin/AdminProfileScreen';
 import AdminAddFood from '../screens/adminaddfood';
+import AdminDashboard from '../screens/admin/DashboardScreen';
+import Managefood from '../screens/admin/Managefood';
 
 const AdminBottomTabs = createBottomTabNavigator();
 
@@ -31,7 +33,7 @@ export default () => (
     }}
   >
     <AdminBottomTabs.Screen
-      name="Dashboard"
+      name="AdminHome"
       component={AdminHome}
       options={{
         tabBarIcon: ({ color }) => (
@@ -49,8 +51,8 @@ export default () => (
       }}
     />
     <AdminBottomTabs.Screen
-      name="Orders"
-      component={OrdersScreen}
+      name="AdminDashboard"
+      component={AdminDashboard}
       options={{
         tabBarIcon: ({ color }) => (
           <Ionicons name="list-outline" size={24} color={color} />
@@ -58,8 +60,8 @@ export default () => (
       }}
     />
     <AdminBottomTabs.Screen
-      name="Products"
-      component={ProductsScreen}
+      name="Managefood"
+      component={Managefood}
       options={{
         tabBarIcon: ({ color }) => (
           <Ionicons name="cube-outline" size={24} color={color} />

@@ -7,7 +7,7 @@ import {
   Image,
   ActivityIndicator,
   StyleSheet,
-  
+  ScrollView,
 } from "react-native";
 import { launchImageLibrary } from "react-native-image-picker";
 import firestore from "@react-native-firebase/firestore";
@@ -18,7 +18,7 @@ import RNFS from "react-native-fs";
 const AdminAddFood = () => {
   const [foodName, setFoodName] = useState("");
   const [price, setPrice] = useState("");
-  const [description, setDescription] = useState(""); // New state for description
+  const [description, setDescription] = useState("");
   const [availability, setAvailability] = useState(true);
   const [category, setCategory] = useState("");
   const [image, setImage] = useState(null);
@@ -49,204 +49,215 @@ const AdminAddFood = () => {
       const fileData = await RNFS.readFile(filePath, "base64");
 
       await firestore().collection("foodProducts").add({
-        name: foodName,
+        name: foodName.trim(),
         price: parseFloat(price),
-        description, // Save description
+        description: description.trim(),
         availability,
         category,
         imageBase64: fileData,
         createdAt: firestore.FieldValue.serverTimestamp(),
       });
 
-      setMessage("Product uploaded successfully!");
+      setMessage("Γ£à Product uploaded successfully!");
       setFoodName("");
       setPrice("");
-      setDescription(""); // Reset description
+      setDescription("");
       setCategory("");
       setImage(null);
       setAvailability(true);
     } catch (error) {
       console.error("Error uploading product:", error);
-      setMessage("Error uploading product. Please try again.");
+      setMessage("Γ¥î Error uploading product. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Add Food Product</Text>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Enter food name"
-        placeholderTextColor={colors.DEFAULT_GREEN}
-        value={foodName}
-        onChangeText={setFoodName}
-      />
+      <View style={styles.card}>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter food name"
+          placeholderTextColor={colors.DEFAULT_GREY}
+          value={foodName}
+          onChangeText={setFoodName}
+        />
 
-      <TextInput
-        style={styles.input}
-        placeholder="Enter price (e.g., 10.99)"
-        placeholderTextColor={colors.DEFAULT_GREEN}
-        value={price}
-        onChangeText={setPrice}
-        keyboardType="numeric"
-      />
+        <TextInput
+          style={styles.input}
+          placeholder="Enter price (e.g., 10.99)"
+          placeholderTextColor={colors.DEFAULT_GREY}
+          value={price}
+          onChangeText={setPrice}
+          keyboardType="numeric"
+        />
 
-      {/* Description Input Field */}
-      <TextInput
-        style={[styles.input, styles.descriptionInput]}
-        placeholder="Enter product description"
-        placeholderTextColor={colors.DEFAULT_GREEN}
-        value={description}
-        onChangeText={setDescription}
-        multiline
-      />
-      
+        <TextInput
+          style={[styles.input, styles.descriptionInput]}
+          placeholder="Enter product description"
+          placeholderTextColor={colors.DEFAULT_GREY}
+          value={description}
+          onChangeText={setDescription}
+          multiline
+        />
 
-      <View style={styles.row}>
-        <Text style={styles.label}>Availability:</Text>
-        <TouchableOpacity
-          style={[styles.button, availability ? styles.buttonActive : styles.buttonInactive]}
-          onPress={() => setAvailability(true)}
-        >
-          <Text style={styles.buttonText}>Available</Text>
+        {/* Availability Toggle */}
+        <View style={styles.row}>
+          <Text style={styles.label}>Availability:</Text>
+          <TouchableOpacity
+            style={[styles.toggleButton, availability ? styles.active : styles.inactive]}
+            onPress={() => setAvailability(true)}
+          >
+            <Text style={styles.buttonText}>Available</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.toggleButton, !availability ? styles.active : styles.inactive]}
+            onPress={() => setAvailability(false)}
+          >
+            <Text style={styles.buttonText}>Unavailable</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Category Picker */}
+        <View style={styles.pickerContainer}>
+          <Text style={styles.label}>Category:</Text>
+          <Picker
+            selectedValue={category}
+            style={styles.picker}
+            onValueChange={(itemValue) => setCategory(itemValue)}
+          >
+            <Picker.Item label="Select Category" value="" />
+            <Picker.Item label="Beverages" value="Beverages" />
+            <Picker.Item label="Snacks" value="Snacks" />
+            <Picker.Item label="Main Course" value="Main Course" />
+            <Picker.Item label="Desserts" value="Desserts" />
+            <Picker.Item label="Icecreams" value="Icecreams" />
+          </Picker>
+        </View>
+
+        {/* Image Picker */}
+        <TouchableOpacity style={styles.imagePicker} onPress={selectImage}>
+          {image ? (
+            <Image source={{ uri: image.uri }} style={styles.imagePreview} />
+          ) : (
+            <Text style={styles.imagePickerText}>≡ƒô╖ Select Image</Text>
+          )}
         </TouchableOpacity>
+
+        {/* Upload Button */}
         <TouchableOpacity
-          style={[styles.button, !availability ? styles.buttonActive : styles.buttonInactive]}
-          onPress={() => setAvailability(false)}
+          style={[styles.uploadButton, loading && styles.disabledButton]}
+          onPress={uploadProduct}
+          disabled={loading}
         >
-          <Text style={styles.buttonText}>Unavailable</Text>
+          {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.uploadButtonText}>Upload Product</Text>}
         </TouchableOpacity>
+
+        {/* Status Message */}
+        {message ? <Text style={styles.message}>{message}</Text> : null}
       </View>
-
-      <View style={styles.row}>
-        <Text style={styles.label}>Category:</Text>
-        <Picker
-          selectedValue={category}
-          style={styles.picker}
-          onValueChange={(itemValue) => setCategory(itemValue)}
-        >
-          <Picker.Item label="Select Category" value="" />
-          <Picker.Item label="Beverages" value="Beverages" />
-          <Picker.Item label="Snacks" value="Snacks" />
-          <Picker.Item label="Main Course" value="Main Course" />
-          <Picker.Item label="Desserts" value="Desserts" />
-          <Picker.Item label="Icecreams" value="Icecreams" />
-          
-        </Picker>
-      </View>
-
-      <TouchableOpacity style={styles.imagePicker} onPress={selectImage}>
-        {image ? (
-          <Image source={{ uri: image.uri }} style={styles.imagePreview} />
-        ) : (
-          <Text style={styles.imagePickerText}>Select Image</Text>
-        )}
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={[styles.uploadButton, loading && styles.disabledButton]}
-        onPress={uploadProduct}
-        disabled={loading}
-      >
-        {loading ? (
-          <ActivityIndicator color="#fff" />
-        ) : (
-          <Text style={styles.uploadButtonText}>Upload Product</Text>
-        )}
-      </TouchableOpacity>
-
-      {message ? <Text style={styles.message}>{message}</Text> : null}
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     padding: 20,
     backgroundColor: colors.DEFAULT_WHITE,
   },
   title: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: "bold",
-    fontFamily: fonts.POPPINS_MEDIUM,
+    fontFamily: fonts.POPPINS_BOLD,
     marginBottom: 20,
     textAlign: "center",
+    color: colors.DEFAULT_GREEN,
+  },
+  card: {
+    backgroundColor: "#fff",
+    padding: 20,
+    borderRadius: 15,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 5,
+    elevation: 4,
   },
   input: {
     borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 10,
-    borderRadius: 5,
+    borderColor: "#ddd",
+    padding: 12,
+    borderRadius: 10,
     marginBottom: 15,
-    backgroundColor: "#fff",
+    backgroundColor: "#f9f9f9",
   },
   descriptionInput: {
-    height: 80, // Increased height for multiline input
-    textAlignVertical: "top", // Ensures text starts at the top
+    height: 80,
+    textAlignVertical: "top",
   },
   row: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
     marginBottom: 15,
   },
   label: {
     fontSize: 16,
-    marginRight: 10,
+    fontWeight: "500",
+    color: colors.DEFAULT_GREEN,
   },
-  picker: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: colors.DEFAULT_RED,
-    padding: 10,
-    borderRadius: 5,
-    backgroundColor: colors.DEFAULT_GREY,
+  toggleButton: {
+    paddingVertical: 8,
+    paddingHorizontal: 15,
+    borderRadius: 8,
   },
-  button: {
-    padding: 10,
-    borderRadius: 5,
-    marginRight: 10,
-  },
-  buttonActive: {
+  active: {
     backgroundColor: colors.DEFAULT_GREEN,
   },
-  buttonInactive: {
-    backgroundColor: "#ccc",
+  inactive: {
+    backgroundColor: "#ddd",
   },
   buttonText: {
     color: "#fff",
   },
+  pickerContainer: {
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 10,
+    marginBottom: 15,
+    backgroundColor: "#f9f9f9",
+    
+  },
+  picker:{
+color:colors.DEFAULT_GREEN
+  },
   imagePicker: {
     height: 150,
+    borderRadius: 10,
+    borderColor: "#ddd",
+    borderWidth: 1,
     justifyContent: "center",
     alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 5,
     marginBottom: 15,
-    backgroundColor: "#fff",
+    backgroundColor: "#f9f9f9",
   },
   imagePickerText: {
-    color: colors.DEFAULT_GREEN,
-    fontSize: 16,
+    color: "#888",
   },
   imagePreview: {
     width: "100%",
     height: "100%",
-    borderRadius: 5,
+    borderRadius: 10,
   },
   uploadButton: {
     backgroundColor: colors.DEFAULT_GREEN,
     padding: 15,
-    borderRadius: 5,
+    borderRadius: 10,
     alignItems: "center",
-  },
-  uploadButtonText: {
-    color: "#fff",
-    fontSize: 16,
   },
   disabledButton: {
     backgroundColor: "#aaa",

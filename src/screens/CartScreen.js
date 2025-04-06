@@ -43,36 +43,36 @@ const CartScreen = () => {
                 console.log("User not logged in");
                 return;
             }
-
+    
             if (cartItems.length === 0) {
                 console.log("Cart is empty");
                 return;
             }
-
+    
             const userId = user.uid;
             const orderData = {
                 userId: userId,
                 items: cartItems,
                 totalAmount: totalPrice - 10, // Apply discount
-                timestamp: firestore.FieldValue.serverTimestamp(),
+                createdAt: firestore.FieldValue.serverTimestamp(), // 🔥 Change from `timestamp` to `createdAt`
                 status: "pending", // You can later update to "delivered" or "completed"
             };
-
+    
             // Add order to Firestore
-            const orderRef = await firestore().collection('orders').add(orderData);
+            const orderRef = await firestore().collection("orders").add(orderData);
             console.log("Order placed successfully:", orderRef.id);
-
+    
             // Clear the cart after order placement
-            await firestore().collection('cart').doc(userId).update({ items: [] });
+            await firestore().collection("cart").doc(userId).update({ items: [] });
             setCartItems([]); // Update local state
-
+    
             // Navigate to order success screen or show a message
             alert("Order placed successfully!");
         } catch (error) {
             console.error("Error placing order:", error);
         }
     };
-
+    
     const fetchCart = async () => {
         try {
             setLoading(true);
