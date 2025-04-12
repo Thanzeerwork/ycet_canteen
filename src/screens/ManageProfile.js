@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, Image, TouchableOpacity, StyleSheet, ActivityIndicator } from "react-native";
+import { View, Text, TextInput, Image, TouchableOpacity, StyleSheet, ActivityIndicator, StatusBar } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 import { launchImageLibrary } from "react-native-image-picker";
 import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { images } from "../constants";
+import { colors, images } from "../constants";
 
 const ManageProfileScreen = ({navigation}) => {
   const [profileImage, setProfileImage] = useState(null);
@@ -56,11 +56,12 @@ const ManageProfileScreen = ({navigation}) => {
   };
 
   if (loading) {
-    return <ActivityIndicator size="large" color="orange" style={{ flex: 1, justifyContent: "center" }} />;
+    return <ActivityIndicator size="large" color={colors.DEFAULT_GREEN} style={{ flex: 1, justifyContent: "center" }} />;
   }
 
   return (
     <View style={styles.container}>
+      <StatusBar backgroundColor={colors.DEFAULT_WHITE} barStyle="light-content" />
       {/* Top Bar */}
       <SafeAreaView>
       <View style={styles.topBar}>
@@ -108,10 +109,10 @@ const renderField = (icon, value, onChange) => (
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "white", padding: 20 },
   topBar: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 20 },
-  saveText: { fontSize: 16, color: "orange", fontWeight: "bold" },
+  saveText: { fontSize: 16, color: colors.DEFAULT_GREEN, fontWeight: "bold" },
   profileContainer: { alignItems: "center", marginBottom: 20 },
   profileImage: { width: 100, height: 100, borderRadius: 50 },
-  editIcon: { position: "absolute", bottom: 5, right: 10, backgroundColor: "orange", padding: 8, borderRadius: 20 },
+  editIcon: { position: "absolute", bottom: 5, right: 10, backgroundColor:colors.DEFAULT_GREEN, padding: 8, borderRadius: 20 },
   profileDetails: { backgroundColor: "white", padding: 15, borderRadius: 10, shadowColor: "#000", elevation: 3 },
   fieldContainer: { flexDirection: "row", alignItems: "center", padding: 12, borderBottomWidth: 1, borderBottomColor: "#ddd" },
   fieldIcon: { marginRight: 15 },

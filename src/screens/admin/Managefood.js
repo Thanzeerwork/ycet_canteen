@@ -9,13 +9,12 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
+  StatusBar,
 } from "react-native";
 import firestore from "@react-native-firebase/firestore";
-import { useNavigation, createStaticNavigation } from "@react-navigation/native";
 import { colors } from "../../constants";
 import Separator from "../../components/separator";
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { Button } from '@react-navigation/elements';
+import { useFocusEffect } from '@react-navigation/native';
 
 
 const Managefood = ({navigation}) => {
@@ -24,6 +23,22 @@ const Managefood = ({navigation}) => {
   const [refreshing, setRefreshing] = useState(false); // State for pull-to-refresh
   
 
+  useFocusEffect(
+            React.useCallback(() => {
+                const updateStatusBar = () => {
+                    StatusBar.setBackgroundColor(colors.DEFAULT_WHITE);
+                    StatusBar.setBarStyle("light-content");
+                };
+    
+                const timeout = setTimeout(updateStatusBar,10); // Small delay to ensure proper update
+    
+                return () => {
+                    clearTimeout(timeout); // Clear timeout if unmounting quickly
+                    
+                    StatusBar.setBarStyle("dark-content");
+                };
+            }, [])
+        );
 
   const fetchProducts = () => {
     setRefreshing(true);
@@ -165,6 +180,7 @@ const Managefood = ({navigation}) => {
 
   return (
     <View style={styles.container}>
+      <StatusBar backgroundColor={colors.DEFAULT_WHITE} barStyle="light-content" />
       <Separator height={1} color={colors.DEFAULT_WHITE} />
       <View style={styles.header}>
 

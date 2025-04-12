@@ -62,6 +62,7 @@ const Navigators = () => {
                 
                 <Stack.Screen name="Adminhome" component={AdminHomeTabs} />
                 <Stack.Screen name="Adminaddfood" component={Adminaddfood} />
+                <Stack.Screen name="ManageProfile" component={ManageProfileScreen} />
 
 
               </>

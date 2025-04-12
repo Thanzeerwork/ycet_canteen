@@ -10,6 +10,9 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        maven {
+            url 'https://api.razorpay.com/maven'
+        }
     }
     dependencies {
         classpath("com.android.tools.build:gradle")

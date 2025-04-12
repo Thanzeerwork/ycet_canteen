@@ -6,6 +6,7 @@ import { colors } from '../constants';
 import Homenew from '../screens/Home';
 import CartScreen from '../screens/CartScreen';
 import AccountScreen from '../screens/AccountScreen';
+import ReorderScreen from '../screens/ReorderScreen';
 
 const BottomTabs = createBottomTabNavigator();
 
@@ -25,6 +26,7 @@ export default () => (
       tabBarShowLabel: false,
       tabBarActiveTintColor: colors.DEFAULT_GREEN,
       tabBarInactiveTintColor: colors.INACTIVE_GREY,
+      
     }}
     op>
     <BottomTabs.Screen
@@ -38,7 +40,7 @@ export default () => (
     />
      <BottomTabs.Screen
       name="Bookmark"
-      component={Homenew}
+      component={ReorderScreen}
       options={{
         tabBarIcon: ({color}) => (
           <Ionicons name="bookmark-outline" size={23} color={color} />

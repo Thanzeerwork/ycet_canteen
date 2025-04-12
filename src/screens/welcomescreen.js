@@ -102,10 +102,12 @@ const styles = StyleSheet.create({
   },
   welcomelistcontainer: {
     height: Display.setheight(70),
+    
   },
   paginationcontainer: {
     flexDirection: 'row',
     marginTop: 10,
+    
   },
   paginationstyle: {
     height: 8,

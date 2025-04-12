@@ -96,7 +96,7 @@ const AccountScreen = ({ navigation }) => {
                         <Text style={styles.menuText}>My All {'\n'}Orders</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.menuItem} activeOpacity={0.2}>
+                    <TouchableOpacity style={styles.menuItem} activeOpacity={0.2} onPress={() => alert("Promo code feature coming soon!")}>
                         <View style={{ ...styles.menuIcon, backgroundColor: colors.LIGHT_RED }}>
                             <MaterialCommunityIcons
                                 name="gift-outline"

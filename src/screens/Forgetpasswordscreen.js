@@ -14,13 +14,13 @@ const Forgetpasswordscreen = ({navigation}) => {
             <SafeAreaView>
 
                 <View style={styles.cont1}>
-                    <Ionicons name="chevron-back-outline" size={30} onPress={() => navigation.goBack()} />
+                    <Ionicons name="chevron-back-outline" size={30} onPress={() => navigation.goBack() } color={colors.DEFAULT_BLACK} />
                     <Text style={styles.Forgettitle}>Forget Password</Text>
                 </View>
 
                 <View style={styles.cont2}>
                     <Text style={styles.Forgettext}>Forget Password</Text>
-                    <Text>Please enter your email.So we can help you recover your password</Text>
+                    <Text style={{color:colors.DEFAULT_BLACK}}>Please enter your email.So we can help you recover your password</Text>
                     <Separator height={15} color={colors.DEFAULT_WHITE} margin={0} />
 
                     <View style={styles.inputcontainer}>
@@ -55,7 +55,8 @@ const styles = StyleSheet.create({
         width: Display.setwidth(80),
         textAlign: 'center',
         fontSize: 20,
-        fontFamily: fonts.POPPINS_MEDIUM
+        fontFamily: fonts.POPPINS_MEDIUM,
+        color:colors.DEFAULT_BLACK
     },
     cont2: {
         paddingHorizontal: 20,

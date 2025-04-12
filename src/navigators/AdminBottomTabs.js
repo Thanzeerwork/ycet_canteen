@@ -55,7 +55,7 @@ export default () => (
       component={AdminDashboard}
       options={{
         tabBarIcon: ({ color }) => (
-          <Ionicons name="list-outline" size={24} color={color} />
+          <Ionicons name="cube-outline" size={24} color={color} />
         ),
       }}
     />
@@ -64,7 +64,7 @@ export default () => (
       component={Managefood}
       options={{
         tabBarIcon: ({ color }) => (
-          <Ionicons name="cube-outline" size={24} color={color} />
+          <Ionicons name="list-outline" size={24} color={color} />
         ),
       }}
     />

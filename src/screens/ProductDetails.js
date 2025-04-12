@@ -96,7 +96,7 @@ const ProductDetails = ({ route }) => {
                         </View>
                         <View style={styles.rowAndCenter}>
                             <Image style={styles.iconImage} source={images.DELIVERY_CHARGE} />
-                            <Text style={styles.deliveryText}>Free Delivery</Text>
+                            <Text style={styles.deliveryText}>Free Packing</Text>
                         </View>
                     </View>
 

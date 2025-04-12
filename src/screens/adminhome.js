@@ -19,7 +19,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import Feather from "react-native-vector-icons/Feather";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useFocusEffect } from "@react-navigation/native";
-import { colors, fonts,Mock } from "../constants";
+import { colors, fonts, Mock } from "../constants";
 import CategoryMenuItem from '../components/Categorymenuitem';
 
 
@@ -28,7 +28,26 @@ const AdminHome = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-   const [activeCategory, setActiveCategory] = useState("ALL");
+  const [activeCategory, setActiveCategory] = useState("ALL");
+
+
+  useFocusEffect(
+            React.useCallback(() => {
+                const updateStatusBar = () => {
+                    StatusBar.setBackgroundColor(colors.DEFAULT_GREEN);
+                    StatusBar.setBarStyle("light-content");
+                };
+    
+                const timeout = setTimeout(updateStatusBar, 10); // Small delay to ensure proper update
+    
+                return () => {
+                    clearTimeout(timeout); // Clear timeout if unmounting quickly
+                     StatusBar.setBackgroundColor(colors.DEFAULT_WHITE);
+                    StatusBar.setBarStyle("dark-content");
+                };
+            }, [])
+        );
+
 
   // Fetch products from Firestore
   const fetchProducts = async () => {
@@ -60,7 +79,7 @@ const AdminHome = ({ navigation }) => {
 
   // Handle search filtering
   const filteredProducts = products.filter((product) =>
-    (activeCategory === "ALL" || product.category === activeCategory) && 
+    (activeCategory === "ALL" || product.category === activeCategory) &&
     product.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -72,27 +91,28 @@ const AdminHome = ({ navigation }) => {
   const toggleAvailability = async (id, currentAvailability) => {
     try {
       const newAvailability = !currentAvailability;
-      
+
       // Update Firestore
       await firestore().collection("foodProducts").doc(id).update({
         availability: newAvailability,
       });
-  
+
       // 🔥 Update local state so UI changes immediately
-      setProducts(prevProducts => 
-        prevProducts.map(product => 
+      setProducts(prevProducts =>
+        prevProducts.map(product =>
           product.id === id ? { ...product, availability: newAvailability } : product
         )
       );
-  
+
     } catch (error) {
       console.error("Error updating availability:", error);
     }
   };
-  
+
 
   const renderProductItem = ({ item }) => (
     <View style={styles.productCard}>
+      <StatusBar backgroundColor={colors.DEFAULT_GREEN} barStyle="light-content" />
       <Image
         source={{ uri: `data:image/jpeg;base64,${item.imageBase64}` }}
         style={styles.productImage}
@@ -110,17 +130,16 @@ const AdminHome = ({ navigation }) => {
         >
           {item.availability ? "Available" : "Unavailable"}
         </Text>
-        <Text style={styles.productPrice}>${item.price.toFixed(2)}</Text>
+        <Text style={styles.productPrice}>₹{item.price.toFixed(2)}</Text>
       </View>
       <View style={styles.productActions}>
         <Switch
           value={item.availability}
           onValueChange={() => toggleAvailability(item.id, item.availability)}
           thumbColor={item.availability ? colors.DEFAULT_GREEN : colors.DEFAULT_GREY}
+          
         />
-        <TouchableOpacity onPress={() => deleteProduct(item.id)}>
-          <Feather name="trash-2" size={24} color="red" />
-        </TouchableOpacity>
+
       </View>
     </View>
   );
@@ -158,12 +177,12 @@ const AdminHome = ({ navigation }) => {
           />
         </View>
 
-         {/* Category Section */}
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.categoryScrollView}>
-        {Mock.CATEGORIES.map(({ name, logo }) => (
-          <CategoryMenuItem key={name} name={name} logo={logo} activeCategory={activeCategory} setActiveCategory={setActiveCategory} />
-        ))}
-      </ScrollView>
+        {/* Category Section */}
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.categoryScrollView}>
+          {Mock.CATEGORIES.map(({ name, logo }) => (
+            <CategoryMenuItem key={name} name={name} logo={logo} activeCategory={activeCategory} setActiveCategory={setActiveCategory} />
+          ))}
+        </ScrollView>
 
         {loading ? (
           <ActivityIndicator size={30} color={colors.DEFAULT_GREEN} />
@@ -220,9 +239,9 @@ const styles = StyleSheet.create({
   categoryScrollView: {
     paddingHorizontal: 10,
     marginTop: 27,
-    paddingBottom:57,
-    
-},
+    paddingBottom: 57,
+
+  },
   alertBadge: {
     borderRadius: 32,
     backgroundColor: colors.DEFAULT_YELLOW,
@@ -268,6 +287,10 @@ const styles = StyleSheet.create({
   productName: {
     fontSize: 16,
     fontWeight: "bold",
+    color: colors.DEFAULT_BLACK
+  },
+  productDescription: {
+    color: colors.DEFAULT_BLACK
   },
   productPrice: {
     fontSize: 16,
@@ -278,11 +301,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   productList: {
-    marginTop:0,
-    padding:5,
-    paddingBottom:30
-    
-   },
+    marginTop: 0,
+    padding: 5,
+    paddingBottom: 30,
+  },
 });
 
 export default AdminHome;

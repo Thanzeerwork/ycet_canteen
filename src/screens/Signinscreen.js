@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import {
   View,
   Text,
@@ -18,6 +18,9 @@ import Togglebutton from '../components/Togglebutton';
 import { useNavigation } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth'; // Import Firebase Authentication
 import firestore from '@react-native-firebase/firestore';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+
+
 
 const Signinscreen = () => {
   const [email, setEmail] = useState('');
@@ -25,6 +28,14 @@ const Signinscreen = () => {
   const [ispasswordshow, setpasswordshow] = useState(false);
   const navigation = useNavigation();
   const [errorMessage, setErrorMessage] = useState(''); // ❗ Error message state
+
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId: '1010563649090-fhfgeshinaet2ajl2ouc3dcnenrmhqb4.apps.googleusercontent.com', // From Firebase
+      offlineAccess: true,
+    });
+  }, []);
+  
 
   const handleSignIn = async () => {
     setErrorMessage('');
@@ -56,6 +67,33 @@ const Signinscreen = () => {
       setErrorMessage('The password or Gmail is incorrect'); // ❗ Display error message above email input
     }
   };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+  
+      const { idToken } = await GoogleSignin.signIn();
+  
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+      const userCredential = await auth().signInWithCredential(googleCredential);
+  
+      console.log('Google Sign-In success:', userCredential.user.email);
+      Alert.alert('Success', `Welcome back, ${userCredential.user.email}!`);
+      
+    } catch (error) {
+      // Log the full error for debugging
+      console.log('Google Sign-In Error:', JSON.stringify(error, null, 2));
+  
+      // Safe error handling
+      const errorMsg =
+        error?.code
+          ? `Error code: ${error.code}\n${error.message}`
+          : 'Something went wrong during Google sign-in.';
+  
+      Alert.alert('Google Sign-In Failed', errorMsg);
+    }
+  };
+  
   
 
   return (
@@ -77,7 +115,7 @@ const Signinscreen = () => {
 
         <View style={styles.cont2}>
           <Text style={styles.welcometext}>Welcome to</Text>
-          <Text>
+          <Text style={{color:colors.DEFAULT_BLACK}}>
             Enter your Email address and password to sign in. Enjoy your Food!
           </Text>
         </View>
@@ -144,7 +182,7 @@ const Signinscreen = () => {
           </TouchableOpacity>
 
           <View style={styles.signupcontainer}>
-            <Text>Don't have an account?</Text>
+            <Text style={{color:colors.DEFAULT_BLACK}}>Don't have an account?</Text>
             <Text
               style={{ color: colors.DEFAULT_GREEN }}
               onPress={() => navigation.navigate('Signup')}
@@ -172,7 +210,7 @@ const Signinscreen = () => {
 
           <Separator height={3.5} color={colors.DEFAULT_WHITE} />
 
-          <TouchableOpacity style={styles.googlecontainer}>
+          <TouchableOpacity style={styles.googlecontainer} onPress={handleGoogleSignIn}>
             <View style={styles.sociallogo}>
               <Ionicons name="logo-google" color={colors.DEFAULT_WHITE} size={30} />
             </View>
@@ -192,6 +230,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.DEFAULT_WHITE,
     flex: 1,
+  
   },
   cont1: {
     flexDirection: 'row',
@@ -204,12 +243,14 @@ const styles = StyleSheet.create({
     width: Display.setwidth(80),
     textAlign: 'center',
     fontSize: 20,
-    fontFamily:fonts.POPPINS_MEDIUM
+    fontFamily:fonts.POPPINS_MEDIUM,
+    color:colors.DEFAULT_BLACK
   },
 
   welcometext: {
     fontSize: 35,
-    fontFamily: fonts.POPPINS_LIGHT
+    fontFamily: fonts.POPPINS_LIGHT,
+    color:colors.DEFAULT_BLACK
   },
   cont2: {
     paddingHorizontal: 20,
@@ -263,7 +304,8 @@ const styles = StyleSheet.create({
     marginTop:20,
     alignItems:'center',
     flexDirection:'row',
-    justifyContent:'center'
+    justifyContent:'center',
+    
 
   },
   orstyle:{

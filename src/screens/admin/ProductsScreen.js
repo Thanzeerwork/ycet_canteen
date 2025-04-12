@@ -62,6 +62,7 @@ const ProductsScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
+            
             <Text style={styles.header}>Manage Products</Text>
 
             {loading ? (

@@ -18,5 +18,5 @@
         DELIVERY_CHARGE: require('../assets/images/delivery_charge.png'),
         MARKER: require('../assets/images/marker.png'),
         EMPTY_CART: require('../assets/images/empty_cart.png'),
-        AVATAR: require('../assets/images/user_avatar.png'),
+        AVATAR: require('../assets/images/user_avatar.jpg'),
       }

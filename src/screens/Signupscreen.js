@@ -27,68 +27,74 @@ const Signupscreen = ({ navigation }) => {
       setError('All fields are required');
       return;
     }
-  
+
     try {
       // Check if the username is already taken
       const existingUsernameSnapshot = await firestore()
         .collection('users')
         .where('username', '==', username)
         .get();
-  
+
       if (!existingUsernameSnapshot.empty) {
         setError('Username is already taken. Please choose a different username.');
         return;
       }
-  
+
       // Check if the email is already registered
       const existingEmailSnapshot = await firestore()
         .collection('users')
         .where('email', '==', email)
         .get();
-  
+
       if (!existingEmailSnapshot.empty) {
         setError('Email is already in use. Please use a different email.');
         return;
       }
-  
+
       // Create user with email and password
       const userCredential = await auth().createUserWithEmailAndPassword(email, password);
       const user = userCredential.user;
-  
+
       // Save user data to Firestore
       await firestore().collection('users').doc(user.uid).set({
         username,
         email,
         password,
-        role:"user"
+        role: "user"
       });
-  
+
       console.log('User created successfully:', username);
       navigation.navigate('Signin'); // Navigate to home screen after signup
     } catch (err) {
       setError(err.message);
     }
   };
-  
+
 
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor={colors.DEFAULT_WHITE} translucent barStyle="dark-content" />
       <SafeAreaView>
         <View style={styles.cont1}>
-          <Ionicons name="chevron-back-outline" size={30} onPress={() => navigation.goBack()} />
+          <Ionicons
+            name="chevron-back-outline"
+            size={30}
+            color={colors.DEFAULT_BLACK} // ← use your predefined color
+            onPress={() => navigation.goBack()}
+          />
+
           <Text style={styles.signintitle}>Sign Up</Text>
         </View>
 
         <View style={styles.cont2}>
           <Text style={styles.welcometext}>Create Account</Text>
-          <Text>Enter your name, email, and password to sign up.</Text>
+          <Text style={{ color: colors.DEFAULT_BLACK }}>Enter your name, email, and password to sign up.</Text>
           <Text style={styles.haveaccount} onPress={() => navigation.navigate('Signin')}>
             Already have an account?
           </Text>
         </View>
 
-        <Separator height={2} color={colors.DEFAULT_WHITE} margin={0}/>
+        <Separator height={2} color={colors.DEFAULT_WHITE} margin={0} />
 
         <View style={styles.inputcontainer}>
           {error ? <Text style={styles.error}>{error}</Text> : null}
@@ -186,18 +192,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: Display.setheight(7),
     width: Display.setwidth(100),
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
+
   },
   signintitle: {
     width: Display.setwidth(80),
     textAlign: 'center',
     fontSize: 20,
-    fontFamily: fonts.POPPINS_MEDIUM
+    fontFamily: fonts.POPPINS_MEDIUM,
+    color: colors.DEFAULT_BLACK
   },
 
   welcometext: {
     fontSize: 35,
-    fontFamily: fonts.POPPINS_LIGHT
+    fontFamily: fonts.POPPINS_LIGHT,
+    color: colors.DEFAULT_BLACK
   },
   cont2: {
     paddingHorizontal: 20,
@@ -222,7 +231,7 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlignVertical: 'center'
   },
-  
+
   signinbutton: {
     backgroundColor: colors.DEFAULT_GREEN,
     borderRadius: 8,
@@ -237,53 +246,53 @@ const styles = StyleSheet.create({
     color: colors.DEFAULT_WHITE
   },
   signupcontainer: {
-    
-    marginTop:20,
-    alignItems:'center',
-    flexDirection:'row',
-    justifyContent:'center'
+
+    marginTop: 20,
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center'
 
   },
-  orstyle:{
-    color:colors.DEFAULT_GREY,
-    textAlign:'center'
+  orstyle: {
+    color: colors.DEFAULT_GREY,
+    textAlign: 'center'
   },
-  fbcontainer:{
-   backgroundColor:colors.FABEBOOK_BLUE,
-   justifyContent: 'center',
-   alignItems: 'center',
-   height:Display.setheight(7),
-   borderRadius:8,
-   flexDirection:'row'
+  fbcontainer: {
+    backgroundColor: colors.FABEBOOK_BLUE,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: Display.setheight(7),
+    borderRadius: 8,
+    flexDirection: 'row'
   },
-  fbtext:{
-     color:colors.DEFAULT_WHITE,
-     
-    },
-  googlecontainer:{
-    backgroundColor:colors.GOOGLE_BLUE,
-   justifyContent: 'center',
-   alignItems: 'center',
-   height:Display.setheight(7),
-   borderRadius:8,
-   flexDirection:'row',
-   
+  fbtext: {
+    color: colors.DEFAULT_WHITE,
+
   },
-  googletext:{
-    color:colors.DEFAULT_WHITE,
-   },
-   sociallogo:{
-    position:'absolute',
-    left:25
-   },
-   toggleandremember:{
-    flexDirection:'row',
-    alignItems:'center'
-   },
-   haveaccount:{
-    color:colors.DEFAULT_GREEN
-   },
-   error: {
+  googlecontainer: {
+    backgroundColor: colors.GOOGLE_BLUE,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: Display.setheight(7),
+    borderRadius: 8,
+    flexDirection: 'row',
+
+  },
+  googletext: {
+    color: colors.DEFAULT_WHITE,
+  },
+  sociallogo: {
+    position: 'absolute',
+    left: 25
+  },
+  toggleandremember: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  haveaccount: {
+    color: colors.DEFAULT_GREEN
+  },
+  error: {
     color: 'red',
     textAlign: 'center',
     marginBottom: 10,

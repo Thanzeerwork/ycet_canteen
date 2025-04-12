@@ -8,12 +8,14 @@ import {
   ActivityIndicator,
   StyleSheet,
   ScrollView,
+  StatusBar,
 } from "react-native";
 import { launchImageLibrary } from "react-native-image-picker";
 import firestore from "@react-native-firebase/firestore";
 import { Picker } from "@react-native-picker/picker";
 import { colors, fonts } from "../constants";
 import RNFS from "react-native-fs";
+import { useFocusEffect } from "@react-navigation/native";
 
 const AdminAddFood = () => {
   const [foodName, setFoodName] = useState("");
@@ -25,6 +27,22 @@ const AdminAddFood = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
+  useFocusEffect(
+          React.useCallback(() => {
+              const updateStatusBar = () => {
+                  StatusBar.setBackgroundColor(colors.DEFAULT_WHITE);
+                  StatusBar.setBarStyle("light-content");
+              };
+  
+              const timeout = setTimeout(updateStatusBar, 50); // Small delay to ensure proper update
+  
+              return () => {
+                  clearTimeout(timeout); // Clear timeout if unmounting quickly
+                   
+                  StatusBar.setBarStyle("dark-content");
+              };
+          }, [])
+      );
   const selectImage = async () => {
     const result = await launchImageLibrary({
       mediaType: "photo",
@@ -75,6 +93,7 @@ const AdminAddFood = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      
       <Text style={styles.title}>Add Food Product</Text>
 
       <View style={styles.card}>
@@ -194,10 +213,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 15,
     backgroundColor: "#f9f9f9",
+    color:colors.DEFAULT_BLACK,
   },
   descriptionInput: {
     height: 80,
     textAlignVertical: "top",
+    color:colors.DEFAULT_BLACK
   },
   row: {
     flexDirection: "row",

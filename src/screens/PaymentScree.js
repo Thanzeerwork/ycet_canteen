@@ -41,7 +41,7 @@ export default function PaymentMethodScreen({navigation}) {
           <Icon name="arrow-back" size={24} color="#000" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Add A Payment Method</Text>
-        <View style={{ width: 24 }} /> {/* Placeholder to center title */}
+        <View style={{ width: 24 }} />
       </View>
 
       {/* Subtitle */}
@@ -75,7 +75,7 @@ export default function PaymentMethodScreen({navigation}) {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#fff", paddingHorizontal: 20,paddingVertical:25 },
   header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingVertical: 15 },
-  headerTitle: { fontSize: 18, fontWeight: "bold", flex: 1, textAlign: "center" },
+  headerTitle: { fontSize: 18, fontWeight: "bold", flex: 1, textAlign: "center",color:colors.DEFAULT_BLACK },
   subtitle: { fontSize: 16, color: "#777", marginVertical: 10 },
   paymentOption: {
     flexDirection: "row",
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
   selectedOption: { backgroundColor: "#E3F2FD", borderWidth: 1, borderColor: "#64B5F6" },
   icon: { marginRight: 10 },
   textContainer: { flex: 1 },
-  paymentTitle: { fontSize: 16, fontWeight: "bold" },
+  paymentTitle: { fontSize: 16, fontWeight: "bold",color:colors.DEFAULT_BLACK},
   paymentDescription: { fontSize: 14, color: "#777" },
   nextButton: { marginTop: 20, backgroundColor: "#00796B", paddingVertical: 10, borderRadius: 5 },
 });

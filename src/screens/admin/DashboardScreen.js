@@ -11,23 +11,25 @@ const AdminDashboard = () => {
     const [totalRevenue, setTotalRevenue] = useState(0);
     const [loading, setLoading] = useState(true);
 
+
     useFocusEffect(
-        React.useCallback(() => {
-            const updateStatusBar = () => {
-                StatusBar.setBackgroundColor(colors.DEFAULT_WHITE);
-                StatusBar.setBarStyle("light-content");
-            };
+              React.useCallback(() => {
+                  const updateStatusBar = () => {
+                      StatusBar.setBackgroundColor(colors.DEFAULT_WHITE);
+                      StatusBar.setBarStyle("light-content");
+                  };
+      
+                  const timeout = setTimeout(updateStatusBar, 10); // Small delay to ensure proper update
+      
+                  return () => {
+                      clearTimeout(timeout); // Clear timeout if unmounting quickly
+                      
+                      StatusBar.setBarStyle("dark-content");
+                  };
+              }, [])
+          );
 
-            const timeout = setTimeout(updateStatusBar, 50); // Small delay to ensure proper update
-
-            return () => {
-                clearTimeout(timeout); // Clear timeout if unmounting quickly
-                StatusBar.setBackgroundColor(colors.DEFAULT_GREEN);
-                StatusBar.setBarStyle("dark-content");
-            };
-        }, [])
-    );
-
+   
     useEffect(() => {
         const fetchOrders = async () => {
             try {
@@ -68,10 +70,7 @@ const AdminDashboard = () => {
                     }
                 });
 
-                console.log("Total Orders:", totalOrdersCount);
-                console.log("Today's Orders:", todayOrdersCount);
-                console.log("Total Revenue:", revenue);
-
+                
                 setTotalOrders(totalOrdersCount);
                 setTodayOrders(todayOrdersCount);
                 setTotalRevenue(revenue);
@@ -91,6 +90,7 @@ const AdminDashboard = () => {
 
     return (
         <ScrollView style={styles.container}>
+
             <Text style={styles.header}>Admin Dashboard</Text>
 
             <View style={styles.statsContainer}>
@@ -106,7 +106,7 @@ const AdminDashboard = () => {
 
                 <View style={styles.statCard}>
                     <Text style={styles.statLabel}>Total Revenue</Text>
-                    <Text style={styles.statValue}>${totalRevenue.toFixed(2)}</Text>
+                    <Text style={styles.statValue}>₹{totalRevenue.toFixed(2)}</Text>
                 </View>
             </View>
         </ScrollView>
@@ -124,13 +124,14 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         textAlign: "center",
         marginBottom: 20,
+        color:colors.DEFAULT_BLACK
     },
     statsContainer: {
         flexDirection: "column",
         gap: 15,
     },
     statCard: {
-        backgroundColor: "#f5f5f5",
+        backgroundColor: colors.DEFAULT_GREEN,
         padding: 20,
         borderRadius: 10,
         shadowColor: "#000",
@@ -142,13 +143,13 @@ const styles = StyleSheet.create({
     },
     statLabel: {
         fontSize: 16,
-        color: "gray",
+        color: colors.DEFAULT_WHITE,
         marginBottom: 5,
     },
     statValue: {
         fontSize: 20,
         fontWeight: "bold",
-        color: "black",
+        color: colors.DEFAULT_WHITE,
     },
     loader: {
         flex: 1,

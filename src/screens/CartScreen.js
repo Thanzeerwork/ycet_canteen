@@ -9,6 +9,10 @@ import { useFocusEffect } from '@react-navigation/native';
 import { colors, fonts, images } from '../constants';
 import { Display } from '../utils';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import RazorpayCheckout from 'react-native-razorpay';
+
+
+
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Separator } from '../components';
@@ -72,7 +76,7 @@ const CartScreen = () => {
             console.error("Error placing order:", error);
         }
     };
-    
+
     const fetchCart = async () => {
         try {
             setLoading(true);
@@ -193,7 +197,7 @@ const CartScreen = () => {
                             <AntDesign name="plus" color={colors.DEFAULT_WHITE} size={20} />
                             <Text style={styles.addButtonEmptyText}>Add Food</Text>
                         </TouchableOpacity>
-                        <Separator height={Display.setheight(0)}/>
+                        <Separator height={Display.setheight(0)} />
                     </View>
                 ) : (
                     <>
@@ -209,7 +213,7 @@ const CartScreen = () => {
                             />
 
                             {/* Promo Code Section */}
-                            <TouchableOpacity style={styles.promoContainer}>
+                            <TouchableOpacity style={styles.promoContainer} onPress={() => alert("Promo code feature coming soon!")}>
                                 <MaterialIcons name="star" size={20} color="#F7931E" />
                                 <Text style={styles.promoText}>Add Promo Code</Text>
                                 <Ionicons name="chevron-forward" size={20} color="black" />
@@ -240,7 +244,7 @@ const CartScreen = () => {
                             <View style={styles.deliveryContainer}>
                                 <Ionicons name="location-sharp" size={20} color="red" />
                                 <View>
-                                    <Text style={styles.deliveryTitle}>Deliver To: YCET Canteen</Text>
+                                    <Text style={styles.deliveryTitle}>Pickup At: YCET Canteen</Text>
                                     <Text style={styles.deliveryAddress}></Text>
                                 </View>
                                 <TouchableOpacity>
@@ -258,7 +262,7 @@ const CartScreen = () => {
                                         <Text style={styles.checkoutText}>Checkout</Text>
                                     </View>
                                     <Text style={styles.checkoutText}>
-                                    ₹{(totalPrice - 10).toFixed(2)}
+                                        ₹{(totalPrice - 10).toFixed(2)}
                                     </Text>
                                 </TouchableOpacity>
                             </View>
@@ -276,6 +280,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         paddingHorizontal: 15,
+        color: colors.DEFAULT_BLACK
     },
     headerContainer: {
         flexDirection: 'row',
@@ -289,6 +294,7 @@ const styles = StyleSheet.create({
         lineHeight: 20 * 1.4,
         width: Display.setwidth(72),
         textAlign: 'center',
+        color: colors.DEFAULT_BLACK
     },
     cartItem: {
         backgroundColor: '#F8F8F8',
@@ -301,6 +307,7 @@ const styles = StyleSheet.create({
     itemName: {
         fontSize: 18,
         fontWeight: 'bold',
+        color: colors.DEFAULT_BLACK
     },
     itemPrice: {
         fontSize: 16,
@@ -320,10 +327,12 @@ const styles = StyleSheet.create({
     quantityText: {
         fontSize: 20,
         fontWeight: 'bold',
+        color: colors.DEFAULT_BLACK
     },
     quantityValue: {
         fontSize: 16,
         marginHorizontal: 10,
+        color: colors.DEFAULT_BLACK
     },
     promoContainer: {
         flexDirection: 'row',
@@ -338,11 +347,18 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginLeft: 10,
         flex: 1,
+        color: colors.DEFAULT_BLACK,
     },
     summaryContainer: {
         backgroundColor: '#fff',
         padding: 15,
+        color: colors.DEFAULT_BLACK
+
     },
+    summaryLabel: {
+        color: colors.DEFAULT_BLACK
+    },
+    summaryValue: { color: colors.DEFAULT_BLACK },
     row: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -351,6 +367,7 @@ const styles = StyleSheet.create({
     totalLabel: {
         fontSize: 18,
         fontWeight: 'bold',
+        color: colors.DEFAULT_BLACK
     },
     totalValue: {
         fontSize: 18,
@@ -385,25 +402,25 @@ const styles = StyleSheet.create({
         height: 70,
         borderRadius: 10,
     },
-    
+
     emptyCartContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop:Display.setheight(15)
-      },
-      emptyCartText: {
+        marginTop: Display.setheight(15)
+    },
+    emptyCartText: {
         fontSize: 30,
         fontFamily: fonts.POPPINS_LIGHT,
         lineHeight: 30 * 1.4,
         color: colors.DEFAULT_GREEN,
-      },
-      emptyCartSubText: {
+    },
+    emptyCartSubText: {
         fontSize: 12,
         fontFamily: fonts.POPPINS_MEDIUM,
         lineHeight: 12 * 1.4,
         color: colors.INACTIVE_GREY,
-      },
-      addButtonEmpty: {
+    },
+    addButtonEmpty: {
         flexDirection: 'row',
         backgroundColor: colors.DEFAULT_YELLOW,
         borderRadius: 8,
@@ -413,18 +430,21 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
         elevation: 3,
         alignItems: 'center',
-      },
-      addButtonEmptyText: {
+    },
+    addButtonEmptyText: {
         fontSize: 12,
         fontFamily: fonts.POPPINS_MEDIUM,
         lineHeight: 12 * 1.4,
         color: colors.DEFAULT_WHITE,
         marginLeft: 10,
-      },
-      emptyCartImage: {
+    },
+    emptyCartImage: {
         height: Display.setwidth(60),
         width: Display.setwidth(60),
-      },
+    },
+    deliveryTitle: {
+        color: colors.DEFAULT_BLACK
+    },
 });
 
 export default CartScreen;

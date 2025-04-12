@@ -114,7 +114,7 @@ const Homenew = ({ navigation }) => {
                             size={15}
                             color={colors.DEFAULT_WHITE}
                         />
-                        <Text style={styles.locationText}>Delivered to</Text>
+                        <Text style={styles.locationText}>Pickup At</Text>
                         <Text style={styles.selectedLocationText}>YCET</Text>
                         <MaterialIcons
                             name="keyboard-arrow-down"
@@ -257,6 +257,7 @@ const styles = StyleSheet.create({
     categoryScrollView: {
         paddingHorizontal: 10,
         marginTop: 15,
+        paddingBottom:5,
     },
     productCard: {
         flexDirection: "row",
@@ -277,6 +278,7 @@ const styles = StyleSheet.create({
     productName: {
         fontSize: 16,
         fontWeight: "bold",
+        color:colors.DEFAULT_BLACK,
     },
     productDescription: {
         fontSize: 14,

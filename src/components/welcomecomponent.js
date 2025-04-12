@@ -41,12 +41,14 @@ const styles = StyleSheet.create({
     
     marginTop:Display.setheight(4),
    fontSize:25,
-   fontFamily:fonts.POPPINS_BOLD
+   fontFamily:fonts.POPPINS_BOLD,
+   color:colors.DEFAULT_BLACK
   },
   contentstyle:{
    fontSize:18,
    fontFamily:fonts.POPPINS_LIGHT,
-   marginHorizontal:30
+   marginHorizontal:30,
+   color:colors.DEFAULT_BLACK
   },
   
 });

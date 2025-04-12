@@ -13,8 +13,7 @@ import { colors } from "../constants";
 const ReorderScreen = ({ navigation }) => {
     const [selectedTab, setSelectedTab] = useState("Pre-Orders");
     const [orders, setOrders] = useState([]);
-    const [refreshing, setRefreshing] = useState(false);
-
+    const [refreshing, setRefreshing] = useState(false)
     // Update status bar colors on focus
     useFocusEffect(
         useCallback(() => {
@@ -135,7 +134,7 @@ const ReorderScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: "#fff" },
+    container: { flex: 1, backgroundColor: colors.DEFAULT_WHITE},
     header: {
         flexDirection: "row",
         alignItems: "center",
@@ -143,7 +142,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         paddingVertical: 15,
     },
-    headerTitle: { fontSize: 18, fontWeight: "bold" },
+    headerTitle: { fontSize: 18, fontWeight: "bold",color:colors.DEFAULT_BLACK },
     tabs: {
         flexDirection: "row",
         justifyContent: "space-around",
@@ -186,6 +185,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: "bold",
         marginBottom: 2,
+        color:colors.DEFAULT_BLACK
     },
     orderDate: {
         fontSize: 14,
